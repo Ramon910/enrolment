@@ -11,6 +11,5 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'EnrolmentsController@index')->name('index');
+Route::post('/{enrolment}', 'EnrolemntsController@store')->name('store');
