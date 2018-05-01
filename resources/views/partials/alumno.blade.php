@@ -45,5 +45,5 @@
             <input type="text" class="form-control" id="pais_nacimiento" name="pais_nacimiento">
         </div>
     </div>
-    
+
 </form>

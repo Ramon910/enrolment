@@ -37,6 +37,7 @@ class CreateStudentsTable extends Migration
             $table->string('curso_anterior');
             $table->boolean('dictamen');
             $table->binary('foto');
+            $table->unsignedInteger('study_id');
             $table->timestamps();
         });
     }

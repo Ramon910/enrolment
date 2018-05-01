@@ -19,10 +19,6 @@
         html, body {
             background-color: lightgray;
             color: black;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 100;
-            height: 100vh;
-            margin: 0;
         }
 
         .full-height {
@@ -69,7 +65,7 @@
     </style>
 </head>
 <body>
-<div class="flex-center position-ref full-height">
+<div class="flex-center position-ref full-height" style="margin: 30px;">
     @if (Route::has('login'))
         <div class="top-right links">
             @auth

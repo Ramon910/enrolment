@@ -45,21 +45,22 @@
                      role="tabpanel"
                      aria-labelledby="list-Padres-list"
                 >
-                    ..Padres.
+                    @include('partials.padre')
+                    @include('partials.madre')
                 </div>
                 <div class="tab-pane fade"
                      id="list-Matrícula"
                      role="tabpanel"
                      aria-labelledby="list-Matrícula-list"
                 >
-                    ..Matrícula.
+                    @include('partials.matricula')
                 </div>
                 <div class="tab-pane fade"
                      id="list-Curso"
                      role="tabpanel"
                      aria-labelledby="list-Curso-list"
                 >
-                    ..Curso.
+
                 </div>
             </div>
         </div>
