@@ -2,12 +2,9 @@
     <h3>Datos padre</h3>
     <div class="form-row">
         <div class="form-group col-md-4">
-            <label for="primercentro">¿Se matricula por primera vez en el centro?</label>
-            <select id="primercentro" name="primercentro" class="form-control">
-                <option>Seleccione</option>
-                <option value="1">SI</option>
-                <option value="0">NO</option>
-            </select>
+            @foreach($opciones->options() as $opcion)
+                <p>{{ $opcion->nombre }}</p>
+            @endforeach
         </div>
         <div class="form-group col-md-4">
             <label for="centro_anterior">Centro en el que estudió el curso anterior</label>
@@ -36,8 +33,8 @@
             <input type="text" class="form-control" id="pendientes" name="pendientes">
         </div>
         <div class="form-group col-md-4">
-            <label for="curso_anterior">Estudios realizados en el curso anterior :</label>
-            <select id="curso_anterior" name="curso_anterior" class="form-control">
+            <label for="1_centro">Estudios realizados en el curso anterior :</label>
+            <select id="1_centro" name="1_centro" class="form-control">
                 <option>Seleccione</option>
                 <option value="6_primaria">6º Primaria</option>
                 <option value="1_eso">1º ESO</option>
@@ -64,8 +61,8 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="transporte">¿ Va a utilizar transporte escolar ?</label>
-            <select id="transporte" name="transporte" class="form-control">
+            <label for="1_centro">¿ Va a utilizar transporte escolar ?</label>
+            <select id="1_centro" name="1_centro" class="form-control">
                 <option>Seleccione</option>
                 <option value="no">NO</option>
                 <option value="aljucer_jardin">Aljucer jardin</option>
@@ -78,9 +75,8 @@
             <label for="matricula">¿Curso del que se matricula ?</label>
             <select id="matricula" name="matricula" class="form-control">
                 <option>Seleccione</option>
-                @foreach($estudios as $estudio)
-                    <option value="{{ $estudio->id }}">{{ $estudio->nombre }}</option>
-                @endforeach
+                <option value="no">NO</option>
+                //@foereach() de los cursos
             </select>
         </div>
     </div>

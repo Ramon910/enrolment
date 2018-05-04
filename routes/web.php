@@ -12,4 +12,4 @@
 */
 
 Route::get('/', 'EnrolmentsController@index')->name('index');
-Route::post('/{enrolment}', 'EnrolemntsController@store')->name('store');
+Route::post('/store', 'EnrolmentsController@store')->name('store');

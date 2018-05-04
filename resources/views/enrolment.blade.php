@@ -31,7 +31,9 @@
                    aria-controls="Curso">Curso</a>
             </div>
         </div>
+
         <div class="col-9" style="background-color: white; padding: 10px;">
+            {!! Form::open(['route' => ['store'], 'method' => 'POST']) !!}
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active"
                      id="list-Alumno"
@@ -63,8 +65,11 @@
 
                 </div>
             </div>
+            <button type="submit">enviar</button>
+            {{ Form::close() }}
         </div>
     </div>
+
 @endsection
 
 

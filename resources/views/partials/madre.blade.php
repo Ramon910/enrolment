@@ -1,4 +1,4 @@
-<form>
+
     <h3>Datos madre</h3>
     <div class="form-row">
         <div class="form-group col-md-4">
@@ -42,5 +42,3 @@
             <input type="text" class="form-control" id="profesionMadre" name="profesionMadre">
         </div>
     </div>
-
-</form>

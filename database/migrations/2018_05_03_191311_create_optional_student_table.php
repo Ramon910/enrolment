@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOptionalsStudiesTable extends Migration
+class CreateOptionalStudentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateOptionalsStudiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('optionals_studies', function (Blueprint $table) {
+        Schema::create('optional_student', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('study_id');
+            $table->unsignedInteger('student_id');
             $table->unsignedInteger('optional_id');
+            $table->unsignedInteger('orden');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateOptionalsStudiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('optionals_studies');
+        Schema::dropIfExists('optional_student');
     }
 }

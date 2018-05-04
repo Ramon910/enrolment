@@ -17,7 +17,7 @@ class CreateOptionalsTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->mediumText('descripcion');
-            $table->string('tipo');
+            //$table->string('tipo');
             $table->timestamps();
         });
     }

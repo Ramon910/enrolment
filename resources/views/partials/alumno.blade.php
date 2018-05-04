@@ -1,4 +1,4 @@
-<form>
+
     <div class="form-row">
         <div class="form-group col-md-3">
             <label for="nombre">Nombre</label>
@@ -45,5 +45,3 @@
             <input type="text" class="form-control" id="pais_nacimiento" name="pais_nacimiento">
         </div>
     </div>
-
-</form>
