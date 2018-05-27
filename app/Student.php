@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    public function paretns()
+    public function parentts()
     {
-        return $this->hasMany(Parent::class);
+        return $this->hasMany(Parentt::class);
     }
 
     public function study()
@@ -16,8 +16,8 @@ class Student extends Model
         return $this->belongsTo(Study::class);
     }
 
-    public function options()
+    public function optionals()
     {
-        $this->belongsToMany(Optional::class);
+        return $this->belongsToMany(Optional::class);
     }
 }

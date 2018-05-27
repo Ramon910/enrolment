@@ -66,5 +66,47 @@ class OptionalsTableSeeder extends Seeder
         $opcion->nombre = 'Iniciación y actividad emprendedora';
         $opcion->descripcion = 'Libre configuración';
         $opcion->save();
+
+        $opcion = new Optional;
+        $opcion->nombre = 'Ciencias aplicadas a la actividad profesional';
+        $opcion->descripcion = 'Troncales';
+        $opcion->save();
+
+        $opcion = new Optional;
+        $opcion->nombre = 'Tecnología';
+        $opcion->descripcion = 'Troncales';
+        $opcion->save();
+
+        $opcion = new Optional;
+        $opcion->nombre = 'Artes escénicas y danza';
+        $opcion->descripcion = 'Libre configuración';
+        $opcion->save();
+
+        $opcion = new Optional;
+        $opcion->nombre = 'Cultura científica';
+        $opcion->descripcion = 'Libre configuración';
+        $opcion->save();
+
+        $opcion = new Optional;
+        $opcion->nombre = 'Educación plástica, visual y audiovisual';
+        $opcion->descripcion = 'Libre configuración';
+        $opcion->save();
+
+        $opcion = new Optional;
+        $opcion->nombre = 'Filosofía';
+        $opcion->descripcion = 'Libre configuración';
+        $opcion->save();
+
+        $opcion = new Optional;
+        $opcion->nombre = 'Música';
+        $opcion->descripcion = 'Libre configuración';
+        $opcion->save();
+
+        $opcion = new Optional;
+        $opcion->nombre = 'Tecnoloǵia de la información y la comunicación';
+        $opcion->descripcion = 'Libre configuración';
+        $opcion->save();
+
+
     }
 }

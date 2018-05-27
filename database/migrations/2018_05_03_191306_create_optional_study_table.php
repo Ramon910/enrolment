@@ -18,6 +18,9 @@ class CreateOptionalStudyTable extends Migration
             $table->unsignedInteger('study_id');
             $table->unsignedInteger('optional_id');
             $table->timestamps();
+
+            $table->foreign('study_id')->references('id')->on('studies');
+            $table->foreign('optional_id')->references('id')->on('optionals');
         });
     }
 

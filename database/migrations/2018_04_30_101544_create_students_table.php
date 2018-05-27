@@ -39,6 +39,8 @@ class CreateStudentsTable extends Migration
             $table->binary('foto')->nullable();
             $table->unsignedInteger('study_id')->nullable();
             $table->timestamps();
+
+            //$table->foreign('study_id')->references('id')->on('studies');
         });
     }
 

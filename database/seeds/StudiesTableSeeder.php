@@ -56,5 +56,70 @@ class StudiesTableSeeder extends Seeder
 
         $study->options()->attach(['1','2','4','5','7','8','9','10','11']);
 
+        $study = new Study;
+        $study->nombre = '1º PMAR' ;
+        $study->descripcion = 'Ámbito científico y matemático, 
+                                ámbito lingüistico y social, 
+                                ámbito lenguas extranjeras, 
+                                educación física,
+                                música y educación plástica,
+                                visual y audiovisual,
+                                refuerzo de la competencia en comunicación lingüística';
+        $study->save();
+
+        $study->options()->attach(['1','2']);
+
+        $study = new Study;
+        $study->nombre = '2º PMAR' ;
+        $study->descripcion = 'Ámbito científico y matemático, 
+                                ámbito lingüistico y social, 
+                                ámbito lenguas extranjeras,
+                                educación física,
+                                música,
+                                tecnología, 
+                                refuerzo de la competencia en comunicación lingüística';
+        $study->save();
+
+        $study->options()->attach(['1','2']);
+
+        $study = new Study;
+        $study->nombre = '4º ESO académico ciencias' ;
+        $study->descripcion = 'Lengua castellana y literatura, 
+                                geofrafía e historia, 
+                                1ª lengua extranjera: inglés,
+                                matemáticas académicas,
+                                biología y geología,
+                                física y química, 
+                                educación física';
+        $study->save();
+
+        $study->options()->attach(['1','2','14','15','10','16','17','18','5','19']);
+
+        $study = new Study;
+        $study->nombre = '4º ESO académico Humanidades y ciencias sociales' ;
+        $study->descripcion = 'Lengua castellana y literatura, 
+                                geofrafía e historia, 
+                                1ª lengua extranjera: inglés,
+                                matemáticas académicas,
+                                biología y geología,
+                                economía, 
+                                latín';
+        $study->save();
+
+        $study->options()->attach(['1','2','14','15','10','16','17','18','5','19']);
+
+        $study = new Study;
+        $study->nombre = '4º ESO aplicado' ;
+        $study->descripcion = 'Lengua castellana y literatura, 
+                                geofrafía e historia, 
+                                1ª lengua extranjera: inglés,
+                                matemáticas académicas,
+                                biología y geología,
+                                economía, 
+                                latín';
+        $study->save();
+
+        $study->options()->attach(['1','2','14','15','10','16','17','18','5','19','12','13']);
+
     }
 }

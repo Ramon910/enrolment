@@ -47,7 +47,7 @@
                      role="tabpanel"
                      aria-labelledby="list-Padres-list"
                 >
-                    @include('partials.padre')
+                    @include('partials.padres')
                     @include('partials.madre')
                 </div>
                 <div class="tab-pane fade"

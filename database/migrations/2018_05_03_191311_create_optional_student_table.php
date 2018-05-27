@@ -19,6 +19,9 @@ class CreateOptionalStudentTable extends Migration
             $table->unsignedInteger('optional_id');
             $table->unsignedInteger('orden');
             $table->timestamps();
+
+            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('optional_id')->references('id')->on('optionals');
         });
     }
 

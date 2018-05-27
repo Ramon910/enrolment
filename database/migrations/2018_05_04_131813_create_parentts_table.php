@@ -26,6 +26,8 @@ class CreateParenttsTable extends Migration
             $table->string('direccion');
             $table->unsignedInteger('student_id');
             $table->timestamps();
+
+            $table->foreign('student_id')->references('id')->on('students');
         });
     }
 
