@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Laravel</title>
 
@@ -12,6 +13,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/style.css">
     <script type="text/javascript" src="/js/app.js"></script>
 
 
@@ -65,7 +67,6 @@
     </style>
 </head>
 <body>
-<div class="flex-center position-ref full-height" style="margin: 30px;">
     @if (Route::has('login'))
         <div class="top-right links">
             @auth
@@ -77,10 +78,17 @@
         </div>
     @endif
 
-    <div class="container">
-        @yield('content')
+    <div class="card" style="width: 100%">
+        <div class="card-header ">
+            @include('layouts.header')
+        </div>
+        <div class="card-body">
+            <div class="container">
+                @yield('content')
+            </div>
+        </div>
     </div>
-</div>
+
 @stack('scripts')
 </body>
 </html>

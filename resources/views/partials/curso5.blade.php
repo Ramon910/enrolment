@@ -2,7 +2,7 @@
 @extends('layouts.layout')
 
 @section('content')
-    {!! Form::open(['route' => ['store.segundopmar'], 'method' => 'POST']) !!}
+    {!! Form::open(['route' => ['store.segundopmar'], 'method' => 'POST', 'onsubmit' => 'return validacion()']) !!}
     <div class="form-row">
         <input type="text" hidden value="{{ $id }}" name="id">
         <div class="col-md-4">
@@ -26,23 +26,33 @@
             {!! $errors->first('especifica', '<span class="help-block">:message</span>') !!}
         </div>
     </div>
-    <button type="submit" class="btn btn-success ">Siguiente</button>
+    <button type="submit" class="btn btn-success float-right" >Siguiente</button>
+    <h5 style="text-align: center" id="error"></h5>
     {{ Form::close() }}
 @endsection
 
 @push('scripts')
     <script>
 
-        $( document ).ready(function() {
-            function validacion() {
-                var nombre = $('#nombre').val();
-                console.log(nombre);
-                if (nombre <= 0){
-                    alert('escriba el nombre');
-                    return false;
-                }
+        //VALIDACIÓN
+        function validacion() {
+            var centinel =0;
+
+            var especifica = $('#especifica');
+
+            if(especifica.val() == null){
+                especifica.addClass('error');
+                centinel = 1;
+            }else {
+                especifica.removeClass('error');
             }
-        });
+
+            if (centinel ==1){
+                $('#error').html('Rellene correctamente los campos en rojo');
+                return false;
+            }
+
+        }
 
     </script>
 @endpush

@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('content')
-    {!! Form::open(['route' => ['store.matricula'], 'method' => 'POST']) !!}
+    {!! Form::open(['route' => ['store.matricula'], 'method' => 'POST', 'onsubmit' => 'return validacion()']) !!}
     <input type="text" hidden value="{{ $id }}" name="id">
     <h3>Matricula</h3>
     <div class="form-row">
@@ -48,18 +48,18 @@
             <label for="curso_anterior">Estudios realizados en el curso anterior :</label>
             <select id="curso_anterior" name="curso_anterior" class="form-control">
                 <option disabled selected>Seleccione</option>
-                <option value="6_primaria"{{ old('curso_anterior') == '6_primaria' ? 'selected' : '' }}>6º Primaria</option>
-                <option value="1_eso" {{ old('curso_anterior') == '1_eso' ? 'selected' : '' }}>1º ESO</option>
-                <option value="2_eso" {{ old('curso_anterior') == '2_eso' ? 'selected' : '' }}>2º ESO</option>
-                <option value="3_eso" {{ old('curso_anterior') == '3_eso' ? 'selected' : '' }}>3º ESO</option>
-                <option value="3_eso" {{ old('curso_anterior') == '3_eso' ? 'selected' : '' }}>4º ESO</option>
-                <option value="2_pmar" {{ old('curso_anterior') == '2_pmar' ? 'selected' : '' }}>2º PEMAR</option>
+                <option value="6 primaria"{{ old('curso_anterior') == '6_primaria' ? 'selected' : '' }}>6º Primaria</option>
+                <option value="1º eso" {{ old('curso_anterior') == '1_eso' ? 'selected' : '' }}>1º ESO</option>
+                <option value="2º eso" {{ old('curso_anterior') == '2_eso' ? 'selected' : '' }}>2º ESO</option>
+                <option value="3º eso" {{ old('curso_anterior') == '3_eso' ? 'selected' : '' }}>3º ESO</option>
+                <option value="3º eso" {{ old('curso_anterior') == '3_eso' ? 'selected' : '' }}>4º ESO</option>
+                <option value="2º pmar" {{ old('curso_anterior') == '2_pmar' ? 'selected' : '' }}>2º PEMAR</option>
                 <option value="eso" {{ old('curso_anterior') == 'eso' ? 'selected' : '' }}>ESO</option>
-                <option value="1_bachillerato" {{ old('curso_anterior') == '1_bachillerato' ? 'selected' : '' }}>1º Bachillerato</option>
-                <option value="2_bachillerato" {{ old('curso_anterior') == '2_bachillerato' ? 'selected' : '' }}>2º Bachillerato</option>
-                <option value="repite_1_bachillerato" {{ old('curso_anterior') == 'repite_1_bachillerato' ? 'selected' : '' }}> Repite 1º Bachillerato</option>
-                <option value="repite_2_bachillerato" {{ old('curso_anterior') == 'repite_2_bachillerato' ? 'selected' : '' }}> Repite 2º Bachillerato</option>
-                <option value="ciclo_formativo" {{ old('curso_anterior') == 'ciclo_formativo' ? 'selected' : '' }}>Ciclo Formativo</option>
+                <option value="1º bachillerato" {{ old('curso_anterior') == '1_bachillerato' ? 'selected' : '' }}>1º Bachillerato</option>
+                <option value="2º bachillerato" {{ old('curso_anterior') == '2_bachillerato' ? 'selected' : '' }}>2º Bachillerato</option>
+                <option value="repite 1º bachillerato" {{ old('curso_anterior') == 'repite_1_bachillerato' ? 'selected' : '' }}> Repite 1º Bachillerato</option>
+                <option value="repite 2º bachillerato" {{ old('curso_anterior') == 'repite_2_bachillerato' ? 'selected' : '' }}> Repite 2º Bachillerato</option>
+                <option value="ciclo formativo" {{ old('curso_anterior') == 'ciclo_formativo' ? 'selected' : '' }}>Ciclo Formativo</option>
             </select>
             {!! $errors->first('curso_anterior', '<span class="help-block">:message</span>') !!}
         </div>
@@ -97,7 +97,8 @@
             {!! $errors->first('matricula', '<span class="help-block">:message</span>') !!}
         </div>
     </div>
-    <button type="submit" class="btn btn-success ">Siguiente</button>
+    <button type="submit" class="btn btn-success float-right" >Siguiente</button>
+    <h5 style="text-align: center" id="error"></h5>
     {{ Form::close() }}
 
 @endsection
@@ -105,16 +106,65 @@
 @push('scripts')
     <script>
 
-        $( document ).ready(function() {
-            function validacion() {
-                var nombre = $('#nombre').val();
-                console.log(nombre);
-                if (nombre <= 0){
-                    alert('escriba el nombre');
-                    return false;
-                }
+        function validacion() {
+            var centinel =0;
+
+            var primercentro = $('#primercentro');
+            var centro_anterior = $('#centro_anterior');
+            var dictamen = $('#dictamen');
+            var repite =$('#repite');
+            var curso_anterior = $('#curso_anterior');
+            var matricula = $('#matricula');
+
+            if (centro_anterior.val() == null || centro_anterior.val().length == 0 ||  /^\s+$/.test(centro_anterior.val())){
+                centro_anterior.addClass('error');
+                centinel = 1;
+            }else {
+                centro_anterior.removeClass('error');
             }
-        });
+
+            if(primercentro.val() == null){
+                primercentro.addClass('error');
+                centinel = 1;
+            }else {
+                primercentro.removeClass('error');
+            }
+
+            if(dictamen.val() == null){
+                dictamen.addClass('error');
+                centinel = 1;
+            }else {
+                dictamen.removeClass('error');
+            }
+
+
+            if(repite.val() == null){
+                repite.addClass('error');
+                centinel = 1;
+            }else {
+                repite.removeClass('error');
+            }
+
+            if(curso_anterior.val() == null){
+                curso_anterior.addClass('error');
+                centinel = 1;
+            }else {
+                curso_anterior.removeClass('error');
+            }
+
+            if(matricula.val() == null){
+                matricula.addClass('error');
+                centinel = 1;
+            }else {
+                matricula.removeClass('error');
+            }
+
+            if (centinel ==1){
+                $('#error').html('Rellene correctamente los campos en rojo');
+                return false;
+            }
+
+        }
 
     </script>
 @endpush
