@@ -18,10 +18,21 @@
     </div>
     <div class="form-row">
         <div class="form-group col-md-12" {{ $errors->has('ciclo') ? 'has-error' : '' }}>
+            <div class="form-check">
+            <h3 class="text-center ">F.P.B</h3>
+            <div style="clear: both;"><hr></div>
+                <div class="">
+                    @foreach( $estudios->options as $opcion)
+                        @if($opcion->descripcion == 'F.P.B')
+                            <input style="margin-left: 80px;" class="" type="radio" name="ciclo" value="{{ $opcion->id }}" {{ old('ciclo') == $opcion->id ? 'checked' : '' }}>
+                            <label class="" for="ciclo" style="display: inline;">{{ $opcion->nombre }}</label>
+                        @endif
+                    @endforeach
+                </div>
+                <div style="clear: both;"><hr></div>
             <h3 class="float-left " style="width: 50%">Ciclos Formativos de GRADO MEDIO</h3>
             <h3 class="float-left text-right" style="width: 50%">Ciclos Formativos de GRADO SUPERIOR</h3>
             <div style="clear: both;"><hr></div>
-            <div class="form-check">
                 <div class="float-left " style="width: 35%;">
                     @foreach( $estudios->options as $opcion)
                         @if($opcion->descripcion == 'Grado Medio Administración y gestión')

@@ -31,5 +31,3 @@ Route::post('/SegundoBachiller1', 'EnrolmentsController@storeSegundoBachiller1')
 Route::post('/SegundoBachiller2', 'EnrolmentsController@storeSegundoBachiller2')->name('store.Segundobachiller2');
 Route::post('/SegundoBachiller3', 'EnrolmentsController@storeSegundoBachiller3')->name('store.Segundobachiller3');
 Route::post('/storeCiclosFormativos', 'EnrolmentsController@storeCiclosFormativos')->name('store.ciclosformativos');
-
-Route::get('/dpf/{id}', 'EnrolmentsController@pdf')->name('pdf');

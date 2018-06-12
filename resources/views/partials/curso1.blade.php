@@ -3,7 +3,7 @@
 @extends('layouts.layout')
 
 @section('content')
-    {!! Form::open(['route' => ['store.primeroeso'], 'method' => 'POST', 'onsubmit' => 'return false']) !!}
+    {!! Form::open(['route' => ['store.primeroeso'], 'method' => 'POST', 'onsubmit' => 'return validacion()']) !!}
     @include('partials.global')
     <br>
     <h1 align="center">Datos Curso</h1>
@@ -70,7 +70,7 @@
             {!! $errors->first('tercera', '<span class="help-block">:message</span>') !!}
         </div>
     </div>
-    <button type="submit" class="btn btn-success float-right" onclick="validacion()">Siguiente</button>
+    <button type="submit" class="btn btn-success float-right" >Siguiente</button>
     <h5 style="text-align: center" id="error"></h5>
     {{ Form::close() }}
 @endsection
@@ -457,6 +457,7 @@
 
             if (centinel ==1){
                 $('#error').html('Rellene correctamente los campos en rojo');
+                console.log('error');
                 return false;
             }
 

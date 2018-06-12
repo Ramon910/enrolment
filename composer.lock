@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e59272a3a5f03e2597ae3a938ae1405",
+    "content-hash": "bfb858e33fa4088cb7fa039af9874657",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1527,6 +1527,51 @@
                 "uuid"
             ],
             "time": "2018-01-20T00:28:24+00:00"
+        },
+        {
+            "name": "rguedes/pdfmerger",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rguedes/PDFMerger.git",
+                "reference": "88747f4741916e035e213556abe4a4eedd5a0711"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rguedes/PDFMerger/zipball/88747f4741916e035e213556abe4a4eedd5a0711",
+                "reference": "88747f4741916e035e213556abe4a4eedd5a0711",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PDFMerger": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Myo Kyaw Htun",
+                    "homepage": "https://github.com/myokyawhtun"
+                },
+                {
+                    "name": "Rolando Guedes",
+                    "homepage": "https://github.com/rguedes"
+                }
+            ],
+            "description": "PDFMerger for PHP",
+            "homepage": "https://github.com/rguedes/PDFMerger",
+            "keywords": [
+                "pdf",
+                "php"
+            ],
+            "time": "2016-04-22T09:30:57+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",

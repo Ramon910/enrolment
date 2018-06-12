@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Parentt;
+use App\Student;
+use App\Study;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
+use PDFMerger;
+
 if (isset($_SESSION['nombre'])){
     session_destroy();
 }
 session_start();
-
-use App\Optional;
-use App\Parentt;
-use App\Student;
-use App\Study;
-use http\Env\Response;
-use Illuminate\Http\Request;
-use Dompdf\Dompdf;
-use Barryvdh\DomPDF\Facade as PDF;
-
 
 class EnrolmentsController extends Controller
 {
@@ -214,388 +211,482 @@ class EnrolmentsController extends Controller
 
     public function storePrimeroESO(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'especifica' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'bilingüe' => 'required'
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'especifica' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'bilingüe' => 'required'
+            ]);
 
-        $student = Student::find($id);
-        $student->bilingüe = $request->bilingüe;
-        $student->save();
+            $student = Student::find($id);
+            $student->bilingüe = $request->bilingüe;
+            $student->save();
 
-        $student->optionals()->attach([['orden' => 'Específica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'Específica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
 
-       /* $dompdf = new Dompdf();
-        $dompdf->loadHtml('<h1 style="text-align: center;">HOJA DE PRUEBA</h1>
-                                <div><p>'.$student->nombre.'</p><p>'.$student->apellidos.'</p></div>');
-
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $dompdf->stream();*/
-
-        //$pdf = PDF::loadView('pdf.matricula', compact('student'));
-        //return $pdf->download('listado.pdf');//return view('partials.alumno');
-
-        /*header("Content-disposition: attachment; filename=/storage/public/fotos/document.pdf");
-        header("Content-type: MIME");
-        readfile("document.pdf");*/
-
-        return ('hola');
-        //return redirect()->route('pdf', $student);
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
-
-    public function pdf(Request $request)
-    {
-        $id = $request->id;
-        $student = Student::find($id);
-        return view('pdf.matricula', compact('student'));
-
-    }
-
 
 
     public function storeSegundoESO(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'especifica' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'bilingüe' => 'required'
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'especifica' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'bilingüe' => 'required'
+            ]);
 
-        $student = Student::find($id);
-        $student->bilingüe = $request->bilingüe;
-        $student->save();
+            $student = Student::find($id);
+            $student->bilingüe = $request->bilingüe;
+            $student->save();
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
-        return $request;
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
+
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storeTerceroESO(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'troncal' => 'required',
-            'especifica' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'cuarta' => 'required',
-            'quinta' => 'required',
-            'bilingüe' => 'required'
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'troncal' => 'required',
+                'especifica' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'cuarta' => 'required',
+                'quinta' => 'required',
+                'bilingüe' => 'required'
+            ]);
 
-        $student = Student::find($id);
-        $student->bilingüe = $request->bilingüe;
-        $student->save();
+            $student = Student::find($id);
+            $student->bilingüe = $request->bilingüe;
+            $student->save();
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'troncal' , 'optional_id'=> $request->troncal, 'student_id' => $id]]);
-        return $request;
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'troncal' , 'optional_id'=> $request->troncal, 'student_id' => $id]]);
+
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storePrimeroPMAR(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'especifica' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'especifica' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
-        return $request;
+            $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
+
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storeSegundoPMAR(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'especifica' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'especifica' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
-        return $request;
+            $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
+
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storeCuartoEso1(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'especifica' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'cuarta' => 'required',
-            'quinta' => 'required',
-            'sexta' => 'required',
-            'septima' => 'required',
-            'octava' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'especifica' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'cuarta' => 'required',
+                'quinta' => 'required',
+                'sexta' => 'required',
+                'septima' => 'required',
+                'octava' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '7' , 'optional_id'=> $request->septima, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '8' , 'optional_id'=> $request->octava, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '7' , 'optional_id'=> $request->septima, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '8' , 'optional_id'=> $request->octava, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
 
-        return $request;
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
+
     }
 
     public function storeCuartoEso3(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'troncal' => 'required',
-            'especifica' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'cuarta' => 'required',
-            'quinta' => 'required',
-            'sexta' => 'required',
-            'septima' => 'required',
-            'octava' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'troncal' => 'required',
+                'especifica' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'cuarta' => 'required',
+                'quinta' => 'required',
+                'sexta' => 'required',
+                'septima' => 'required',
+                'octava' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '7' , 'optional_id'=> $request->septima, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '8' , 'optional_id'=> $request->octava, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'troncal' , 'optional_id'=> $request->troncal, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '7' , 'optional_id'=> $request->septima, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '8' , 'optional_id'=> $request->octava, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'troncal' , 'optional_id'=> $request->troncal, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'especifica' , 'optional_id'=> $request->especifica, 'student_id' => $id]]);
 
-        return $request;
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storePrimeroBachiller1(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'opcion' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'cuarta' => 'required',
-            'quinta' => 'required',
-            'sexta' => 'required',
-            'septima' => 'required',
-            'octava' => 'required',
-            'novena' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'opcion' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'cuarta' => 'required',
+                'quinta' => 'required',
+                'sexta' => 'required',
+                'septima' => 'required',
+                'octava' => 'required',
+                'novena' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '7' , 'optional_id'=> $request->septima, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '8' , 'optional_id'=> $request->octava, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '9' , 'optional_id'=> $request->novena, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->troncal, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '7' , 'optional_id'=> $request->septima, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '8' , 'optional_id'=> $request->octava, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '9' , 'optional_id'=> $request->novena, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion, 'student_id' => $id]]);
 
-        return $request;
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storePrimeroBachiller2(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'opcion' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'cuarta' => 'required',
-            'quinta' => 'required',
-            'sexta' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'opcion' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'cuarta' => 'required',
+                'quinta' => 'required',
+                'sexta' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->troncal, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->troncal, 'student_id' => $id]]);
 
-        return $request;
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storePrimeroBachiller3(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'cuarta' => 'required',
-            'quinta' => 'required',
-            'sexta' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'cuarta' => 'required',
+                'quinta' => 'required',
+                'sexta' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
 
-        return $request;
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storeSegundoBachiller1(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'opcion_primera' => 'required',
-            'opcion_segunda' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'cuarta' => 'required',
-            'quinta' => 'required',
-            'primera1'=> 'required',
-            'segunda1'=> 'required',
-            'tercera1'=> 'required',
-            'cuarta1' => 'required',
-            'quinta1' => 'required',
-            'sexta1' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'opcion_primera' => 'required',
+                'opcion_segunda' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'cuarta' => 'required',
+                'quinta' => 'required',
+                'primera1'=> 'required',
+                'segunda1'=> 'required',
+                'tercera1'=> 'required',
+                'cuarta1' => 'required',
+                'quinta1' => 'required',
+                'sexta1' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion_primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion_segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion_primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion_segunda, 'student_id' => $id]]);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta1, 'student_id' => $id]]);
 
-        return $request;
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storeSegundoBachiller2(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'opcion' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'requstoreCiclosFormativosired',
-            'primera1'=> 'required',
-            'segunda1'=> 'required',
-            'tercera1'=> 'required',
-            'cuarta1' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'opcion' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'requstoreCiclosFormativosired',
+                'primera1'=> 'required',
+                'segunda1'=> 'required',
+                'tercera1'=> 'required',
+                'cuarta1' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion, 'student_id' => $id]]);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta1, 'student_id' => $id]]);
 
-        return $request;
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storeSegundoBachiller3(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'opcion_primera' => 'required',
-            'opcion_segunda' => 'required',
-            'primera'=> 'required',
-            'segunda'=> 'required',
-            'tercera'=> 'required',
-            'primera1'=> 'required',
-            'segunda1'=> 'required',
-            'tercera1'=> 'required',
-            'cuarta1' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'opcion_primera' => 'required',
+                'opcion_segunda' => 'required',
+                'primera'=> 'required',
+                'segunda'=> 'required',
+                'tercera'=> 'required',
+                'primera1'=> 'required',
+                'segunda1'=> 'required',
+                'tercera1'=> 'required',
+                'cuarta1' => 'required',
+            ]);
 
-        $student = Student::find($id);
+            $student = Student::find($id);
 
-        $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion_primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion_segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion_primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion_segunda, 'student_id' => $id]]);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera, 'student_id' => $id]]);
 
-        $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera1, 'student_id' => $id]]);
-        $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '1' , 'optional_id'=> $request->primera1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '2' , 'optional_id'=> $request->segunda1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '3' , 'optional_id'=> $request->tercera1, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta1, 'student_id' => $id]]);
 
-        return redirect()->route('pdf', $student);
+            $this->pdfESO($student->id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     public function storeCiclosFormativos(Request $request)
     {
-        $id = $this->guardar($request);
-        $this->validate($request, [
-            'ciclo' => 'required',
-        ]);
+        if (isset($_SESSION['nombre'])){
+            $id = $this->guardar($request);
+            $this->validate($request, [
+                'ciclo' => 'required',
+            ]);
 
+            $student = Student::find($id);
+
+            $student->optionals()->attach([['orden' => 'Ciclo Formativo' , 'optional_id'=> $request->ciclo, 'student_id' => $id]]);
+
+            if ($request->ciclo == 53 || $request->ciclo == 54){
+                $this->pdfFP($student->id);
+            }else{
+                $this->pdfGrado($student->id);
+            }
+        }else{
+            return redirect()->route('index');
+        }
+    }
+
+    public function pdfESO($id)
+    {
+        session_destroy();
         $student = Student::find($id);
+        $pdf = PDF::loadView('pdf.matricula', compact('student'));
+        $name = 'matricula'.$id.'.pdf';
+        $pdf->save(storage_path('app/public/matriculas/'.$name));
 
-        $student->optionals()->attach([['orden' => 'Ciclo Formativo' , 'optional_id'=> $request->ciclo, 'student_id' => $id]]);
+        $pdf1 = storage_path().'/app/public/matriculas/'.$name;
+        $pdf2 = storage_path().'/app/public/pdf/eso/eso.pdf';
 
-        return $request;
+        $pdfMerge = new PDFMerger();
+        $pdfMerge->addPDF($pdf1, 'all');
+        $pdfMerge->addPDF($pdf2, 'all');
+
+        $pdfMerge->merge('browser', $name);
+    }
+
+    public function pdfFP($id)
+    {
+        session_destroy();
+        $student = Student::find($id);
+        $pdf = PDF::loadView('pdf.matricula', compact('student'));
+        $name = 'matricula'.$id.'.pdf';
+        $pdf->save(storage_path('app/public/matriculas/'.$name));
+
+        $pdf1 = storage_path().'/app/public/matriculas/'.$name;
+        $pdf2 = storage_path().'/app/public/pdf/fp/fp.pdf';
+
+        $pdfMerge = new PDFMerger();
+        $pdfMerge->addPDF($pdf1, 'all');
+        $pdfMerge->addPDF($pdf2, 'all');
+
+        $pdfMerge->merge('browser', $name);
+    }
+
+    public function pdfGrado($id)
+    {
+        session_destroy();
+        $student = Student::find($id);
+        $pdf = PDF::loadView('pdf.matricula', compact('student'));
+        $name = 'matricula'.$id.'.pdf';
+        $pdf->save(storage_path('app/public/matriculas/'.$name));
+
+        $pdf1 = storage_path().'/app/public/matriculas/'.$name;
+        $pdf2 = storage_path().'/app/public/pdf/grados/grados.pdf';
+
+        $pdfMerge = new PDFMerger();
+        $pdfMerge->addPDF($pdf1, 'all');
+        $pdfMerge->addPDF($pdf2, 'all');
+
+        $pdfMerge->merge('browser', $name);
     }
 
 
