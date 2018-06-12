@@ -96,7 +96,7 @@
            <th>
                @foreach($student->optionals as $option)
                    @if($option->descripcion == 'Troncales')
-                       Troncales
+                       Troncales:
                        @break
                    @endif
                @endforeach
@@ -104,7 +104,7 @@
            <th>
                @foreach($student->optionals as $option)
                    @if($option->descripcion == 'De opción')
-                       De opción
+                       De opción:
                        @break
                    @endif
                @endforeach
@@ -112,7 +112,7 @@
            <th>
                @foreach($student->optionals as $option)
                    @if($option->descripcion == 'Libre configuración')
-                       Libre configuración
+                       Libre configuración:
                        @break
                    @endif
                @endforeach
@@ -138,7 +138,7 @@
            <td>
                @foreach($student->optionals as $option)
                    @if($option->descripcion == 'Troncales')
-                       { $option->nombre }}
+                       {{ $option->nombre }}<br>
                    @endif
                @endforeach
            </td>
@@ -146,7 +146,7 @@
                @foreach($student->optionals as $option)
 
                    @if($option->descripcion == 'De opción')
-                       {{ $option->nombre }}
+                       {{ $option->nombre }}<br>
                    @endif
                @endforeach
            </td>
@@ -154,21 +154,21 @@
                @foreach($student->optionals as $option)
 
                    @if($option->descripcion == 'Libre configuración')
-                       {{ $option }}<br>
+                       {{ $option->pivot->orden }}- {{ $option->nombre }}<br>
                    @endif
                @endforeach
            </td>
            <td>
                @foreach($student->optionals as $option)
                    @if($option->descripcion == 'Específica')
-                       {{ $option->nombre }}<br>
+                       {{ $option->pivot->orden }}-{{ $option->nombre }}<br>
                    @endif
                @endforeach
            </td>
            <td>
                @foreach($student->optionals as $option)
                    @if($option->descripcion == 'Específica I')
-                       {{ $option->nombre }}
+                       {{ $option->pivot->orden }}-{{ $option->nombre }}<br>
                    @endif
                @endforeach
            </td>

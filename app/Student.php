@@ -18,6 +18,6 @@ class Student extends Model
 
     public function optionals()
     {
-        return $this->belongsToMany(Optional::class);
+        return $this->belongsToMany(Optional::class)->withPivot('orden');
     }
 }

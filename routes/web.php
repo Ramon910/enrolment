@@ -12,10 +12,7 @@
 */
 
 Route::get('/', 'EnrolmentsController@index')->name('index');
-Route::get('/padres/{id}', 'EnrolmentsController@padres')->name('padres');
-Route::get('/matricula/{id}', 'EnrolmentsController@matricula')->name('matricula');
-Route::get('/curso/{id}/{curso}', 'EnrolmentsController@curso')->name('curso');
-Route::post('/store', 'EnrolmentsController@store')->name('store');
+Route::get('/curso/{curso}', 'EnrolmentsController@curso')->name('curso');
 Route::post('/storeAlumno', 'EnrolmentsController@storeAlumno')->name('store.alumno');
 Route::post('/storePadres', 'EnrolmentsController@storePadres')->name('store.padres');
 Route::post('/storeMatricula', 'EnrolmentsController@storeMatricula')->name('store.matricula');

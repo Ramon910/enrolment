@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/style.css">
     <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/scripts.js"></script>
 
 
     <style>
