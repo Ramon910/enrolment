@@ -79,7 +79,6 @@
     <script>
 
         $( document ).ready(function() {
-
             var primera = $('#primera option');
             $('#primera').change(function (){
                 var opciones='';

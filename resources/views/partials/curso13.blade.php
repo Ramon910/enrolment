@@ -185,7 +185,7 @@
         //VALIDACIÓN
         function validacion() {
             var centinel =0;
-// validacion alumno
+            // validacion alumno
             var nombre = $('#nombre');
             var apellido = $('#apellidos');
             var sexo = $('#sexo');

@@ -16,6 +16,7 @@ session_start();
 
 class EnrolmentsController extends Controller
 {
+    //Vista index
     public function index()
     {
         session_destroy();
@@ -23,6 +24,7 @@ class EnrolmentsController extends Controller
         return view('partials.alumno', compact('estudios'));
     }
 
+    //Vista formulario completa con el curso que se matricula
     public function curso(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -35,6 +37,7 @@ class EnrolmentsController extends Controller
 
     }
 
+    //Guardamos datos del alumno
     public function storeAlumno(Request $request)
     {
         if ($request->ajax()){
@@ -56,6 +59,7 @@ class EnrolmentsController extends Controller
         return \Illuminate\Support\Facades\Response::json($request);
     }
 
+    //Guardamos datos de los padres
     public function storePadres(Request $request)
     {
         if ($request->ajax()){
@@ -84,6 +88,7 @@ class EnrolmentsController extends Controller
         return \Illuminate\Support\Facades\Response::json($request);
     }
 
+    //Guardamos datos de la matricula
     public function storeMatricula(Request $request)
     {
         $_SESSION['primercentro']= $request->primercentro;
@@ -100,6 +105,7 @@ class EnrolmentsController extends Controller
         return redirect()->route('curso', $curso);
     }
 
+    //Guardamos todos los datos en la base de datos
     public function guardar(Request $request)
     {
         //Alumno
@@ -208,7 +214,7 @@ class EnrolmentsController extends Controller
         return $estudiante->id;
     }
 
-
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storePrimeroESO(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -237,7 +243,7 @@ class EnrolmentsController extends Controller
         }
     }
 
-
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeSegundoESO(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -265,6 +271,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeTerceroESO(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -298,6 +305,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storePrimeroPMAR(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -316,6 +324,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeSegundoPMAR(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -334,6 +343,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeCuartoEso1(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -369,6 +379,7 @@ class EnrolmentsController extends Controller
 
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeCuartoEso3(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -405,6 +416,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storePrimeroBachiller1(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -441,6 +453,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storePrimeroBachiller2(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -471,6 +484,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storePrimeroBachiller3(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -499,6 +513,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeSegundoBachiller1(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -543,6 +558,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeSegundoBachiller2(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -577,6 +593,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeSegundoBachiller3(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -613,6 +630,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Guardamos datos del curso en la base de datos y sacamos el pdf
     public function storeCiclosFormativos(Request $request)
     {
         if (isset($_SESSION['nombre'])){
@@ -635,6 +653,7 @@ class EnrolmentsController extends Controller
         }
     }
 
+    //Unimos el pdf de los datos y lo mostramos por pantalla
     public function pdfESO($id)
     {
         session_destroy();
@@ -653,6 +672,7 @@ class EnrolmentsController extends Controller
         $pdfMerge->merge('browser', $name);
     }
 
+    //Unimos el pdf de los datos y lo mostramos por pantalla
     public function pdfFP($id)
     {
         session_destroy();
@@ -671,6 +691,7 @@ class EnrolmentsController extends Controller
         $pdfMerge->merge('browser', $name);
     }
 
+    //Unimos el pdf de los datos y lo mostramos por pantalla
     public function pdfGrado($id)
     {
         session_destroy();
@@ -688,6 +709,4 @@ class EnrolmentsController extends Controller
 
         $pdfMerge->merge('browser', $name);
     }
-
-
 }

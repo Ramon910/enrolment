@@ -80,15 +80,6 @@
     <script>
 
         $( document ).ready(function() {
-            function validacion() {
-                var nombre = $('#nombre').val();
-                console.log(nombre);
-                if (nombre <= 0){
-                    alert('escriba el nombre');
-                    return false;
-                }
-            }
-
             var primera = $('#primera option');
             $('#primera').change(function (){
                 var opciones='';

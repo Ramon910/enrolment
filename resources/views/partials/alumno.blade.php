@@ -1,8 +1,9 @@
 @extends('layouts.layout')
 
 @section('content')
-    <h1 align="center">DATOS DEL ALUMNO</h1>
+
 <div id="cambiar">
+    <h1 align="center">DATOS DEL ALUMNO</h1>
 {!! Form::open(['route' => ['store.alumno'], 'method' => 'POST','files' => true , 'onsubmit' => 'return false']) !!}
     <div class="form-row">
         <div class="form-group col-md-4">
@@ -555,7 +556,7 @@
                     },
                     success: function success(data, status) {
                         $('#cambiar').html('{!! Form::open(["route" => ["store.matricula"], "method" => "POST", "onsubmit" => "return validacionMatricula()"]) !!}\n' +
-                            '    <h3>Matricula</h3>\n' +
+                            '    <h3>Matrícula</h3>\n' +
                             '    <div class="form-row">\n' +
                             '        <div class="form-group col-md-4" {{ $errors->has("primercentro") ? "has-error" : "" }}>\n' +
                             '            <label for="primercentro">¿Se matricula por primera vez en el centro?</label>\n' +

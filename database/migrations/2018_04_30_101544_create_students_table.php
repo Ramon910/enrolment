@@ -36,12 +36,9 @@ class CreateStudentsTable extends Migration
             $table->string('pendientes')->nullable();
             $table->string('curso_anterior')->nullable();
             $table->boolean('dictamen')->nullable();
-            $table->string('foto')->nullable();
             $table->unsignedInteger('study_id')->nullable();
             $table->boolean('bilingüe')->nullable();
             $table->timestamps();
-
-            //$table->foreign('study_id')->references('id')->on('studies');
         });
     }
 
