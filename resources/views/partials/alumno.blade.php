@@ -606,7 +606,7 @@
                             '                <option value="2º eso" {{ old("curso_anterior") == "2_eso" ? "selected" : "" }}>2º ESO</option>\n' +
                             '                <option value="3º eso" {{ old("curso_anterior") == "3_eso" ? "selected" : "" }}>3º ESO</option>\n' +
                             '                <option value="4º eso" {{ old("curso_anterior") == "4_eso" ? "selected" : "" }}>4º ESO</option>\n' +
-                            '                <option value="2º pmar" {{ old("curso_anterior") == "2_pmar" ? "selected" : "" }}>2º PEMAR</option>\n' +
+                            '                <option value="2º pmar" {{ old("curso_anterior") == "2_pmar" ? "selected" : "" }}>2º PMAR</option>\n' +
                             '                <option value="eso" {{ old("curso_anterior") == "eso" ? "selected" : "" }}>ESO</option>\n' +
                             '                <option value="1º bachillerato" {{ old("curso_anterior") == "1_bachillerato" ? "selected" : "" }}>1º Bachillerato</option>\n' +
                             '                <option value="2º bachillerato" {{ old("curso_anterior") == "2_bachillerato" ? "selected" : "" }}>2º Bachillerato</option>\n' +

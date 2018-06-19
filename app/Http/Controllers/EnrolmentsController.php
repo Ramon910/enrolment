@@ -476,7 +476,7 @@ class EnrolmentsController extends Controller
             $student->optionals()->attach([['orden' => '4' , 'optional_id'=> $request->cuarta, 'student_id' => $id]]);
             $student->optionals()->attach([['orden' => '5' , 'optional_id'=> $request->quinta, 'student_id' => $id]]);
             $student->optionals()->attach([['orden' => '6' , 'optional_id'=> $request->sexta, 'student_id' => $id]]);
-            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->troncal, 'student_id' => $id]]);
+            $student->optionals()->attach([['orden' => 'de opción' , 'optional_id'=> $request->opcion, 'student_id' => $id]]);
 
             $this->pdfESO($student->id);
         }else{
@@ -567,7 +567,7 @@ class EnrolmentsController extends Controller
                 'opcion' => 'required',
                 'primera'=> 'required',
                 'segunda'=> 'required',
-                'tercera'=> 'requstoreCiclosFormativosired',
+                'tercera'=> 'required',
                 'primera1'=> 'required',
                 'segunda1'=> 'required',
                 'tercera1'=> 'required',
